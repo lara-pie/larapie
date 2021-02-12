@@ -11,6 +11,7 @@
             ])
         @endforeach
     </div>
+
     <style>
         .larapie-container {
             width: 100%;
