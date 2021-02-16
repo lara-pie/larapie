@@ -6,7 +6,7 @@
          aria-controls="route-info-{{ $index }}"
     >
         <div class="badge bg-{{ $background }} method-badge">{{ $route['methods'][0] }}</div>
-        <div class="p-1 text-dark">/{{ $route['uri'] }}</div> @if($route['auth_required']) <div class="badge bg-info">auth</div> @endif
+        <div class="p-1 text-dark">{{ !Str::startsWith($route['uri'], '/') ? '/' : '' }}{{ $route['uri'] }}</div> @if($route['auth_required']) <div class="badge bg-info">auth</div> @endif
     </div>
     <div class="collapse" id="route-info-{{ $index }}">
         <div>
