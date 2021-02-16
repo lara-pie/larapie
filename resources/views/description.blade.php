@@ -1,6 +1,6 @@
 <h5 class="field-header m--1">Description</h5>
 <div class="px-3 description-body">
-    URI: <span class="font-weight-bold">/{{ $route['uri'] }}</span>
+    URI: <span class="font-weight-bold">{{ !Str::startsWith($route['uri'], '/') ? '/' : '' }}{{ $route['uri'] }}</span>
     <br>
     Authentication required: <span
             class="text-{{ $route['auth_required'] ? 'primary' : 'danger' }}">{{ $route['auth_required'] ? 'Yes' : 'No' }}</span>
