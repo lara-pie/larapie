@@ -53,8 +53,8 @@ final class RequestClassParser
     private function requestClass(ReflectionFunctionAbstract $reflection): ?string
     {
         foreach ($reflection->getParameters() as $parameter) {
-            if ($parameter->getClass()) {
-                $requestClass = $parameter->getClass()->getName();
+            if ($parameter->getType()) {
+                $requestClass = $parameter->getType()->getName();
                 if (Str::startsWith($requestClass, 'App\Http\Requests\\')) {
                     return $requestClass;
                 }
