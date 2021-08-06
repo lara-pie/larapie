@@ -12,6 +12,10 @@ class LarapieServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind('larapie', function($app) {
+            return new LarapieHelper();
+        });
+
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
