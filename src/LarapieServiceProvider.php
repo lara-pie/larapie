@@ -12,6 +12,10 @@ class LarapieServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind('larapie', function($app) {
+            return new LarapieHelper();
+        });
+
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
@@ -40,11 +44,11 @@ class LarapieServiceProvider extends ServiceProvider
     {
         $config = [];
 
-        if (config('larapie.prefix')) {
-            $config['prefix'] = config('larapie.prefix');
+        if (config('larapie.routes.prefix')) {
+            $config['prefix'] = config('larapie.routes.prefix');
         }
-        if (config('larapie.middleware')) {
-            $config['middleware'] = config('larapie.middleware');
+        if (config('larapie.routes.middleware')) {
+            $config['middleware'] = config('larapie.routes.middleware');
         }
 
         return $config;
