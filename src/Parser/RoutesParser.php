@@ -11,37 +11,20 @@ use Illuminate\Routing\Router;
 final class RoutesParser
 {
     /**
-     * @var Router
-     */
-    private Router $router;
-    private RulesParser $rulesParser;
-    private array $routes;
-    /**
-     * @var MiddlewaresParser
-     */
-    private MiddlewaresParser $middlewaresParser;
-    /**
-     * @var RequestClassParser
-     */
-    private RequestClassParser $requestClassParser;
-
-    /**
      * RoutesParser constructor.
      * @param  Router  $router
      * @param  RulesParser  $rulesParser
      * @param  MiddlewaresParser  $middlewaresParser
      * @param  RequestClassParser  $requestClassParser
+     * @param  CheckIfIgnoredRoute  $checkIfIgnoredRoute
      */
     public function __construct(
-        Router $router,
-        RulesParser $rulesParser,
-        MiddlewaresParser $middlewaresParser,
-        RequestClassParser $requestClassParser
+        private Router $router,
+        private RulesParser $rulesParser,
+        private MiddlewaresParser $middlewaresParser,
+        private RequestClassParser $requestClassParser,
+        private CheckIfIgnoredRoute $checkIfIgnoredRoute
     ) {
-        $this->router = $router;
-        $this->rulesParser = $rulesParser;
-        $this->middlewaresParser = $middlewaresParser;
-        $this->requestClassParser = $requestClassParser;
     }
 
     /**
@@ -61,6 +44,10 @@ final class RoutesParser
      */
     private function handleRoute(Route $route)
     {
+        if ($this->checkIfIgnoredRoute->check($route)) {
+            return;
+        }
+
         $requestClass = $this->requestClassParser->getRequestClass($route);
         $middlewares = $this->getMiddlewares($route->getAction('middleware'));
 
@@ -96,11 +83,15 @@ final class RoutesParser
     }
 
     /**
-     * @param  array|null  $middlewares
+     * @param  array|string|null  $middlewares
      * @return Middlewares|null
      */
-    private function getMiddlewares(?array $middlewares): ?Middlewares
+    private function getMiddlewares(array|string|null $middlewares): ?Middlewares
     {
+        if (is_string($middlewares)) {
+            $middlewares = [$middlewares];
+        }
+
         return $middlewares ? $this->middlewaresParser->parse($middlewares) : null;
     }
 }
