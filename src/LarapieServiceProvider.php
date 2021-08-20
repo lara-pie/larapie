@@ -44,11 +44,11 @@ class LarapieServiceProvider extends ServiceProvider
     {
         $config = [];
 
-        if (config('larapie.prefix')) {
-            $config['prefix'] = config('larapie.prefix');
+        if (config('larapie.routes.prefix')) {
+            $config['prefix'] = config('larapie.routes.prefix');
         }
-        if (config('larapie.middleware')) {
-            $config['middleware'] = config('larapie.middleware');
+        if (config('larapie.routes.middleware')) {
+            $config['middleware'] = config('larapie.routes.middleware');
         }
 
         return $config;
