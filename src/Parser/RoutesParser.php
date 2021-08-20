@@ -10,6 +10,8 @@ use Illuminate\Routing\Router;
 
 final class RoutesParser
 {
+    private array $routes;
+
     /**
      * RoutesParser constructor.
      * @param  Router  $router
@@ -58,7 +60,7 @@ final class RoutesParser
             'rules'          => $this->getRules($requestClass),
             'path_variables' => $this->getPathVariables($route),
             'middlewares'    => $middlewares,
-            'auth_required'  => $middlewares ? $middlewares->isAuthRequired() : false,
+            'auth_required'  => $middlewares && $middlewares->isAuthRequired(),
         ];
     }
 
@@ -68,7 +70,7 @@ final class RoutesParser
      */
     private function getPathVariables(Route $route): ?PathVariables
     {
-        $variables = $route->compiled ? $route->compiled->getPathVariables() : null;
+        $variables = $route->compiled?->getPathVariables();
 
         return $variables ? new PathVariables($variables) : null;
     }
